@@ -7,6 +7,8 @@ install-coding-expert:
 	sudo npm install -g @anthropic-ai/claude-code
 
 start-coding-expert:
-	code
+	claude
 
-.PHONY : all help install-coding-expert start-coding-expert
+start : start-coding-expert
+
+.PHONY : all help install-coding-expert start-coding-expert start
