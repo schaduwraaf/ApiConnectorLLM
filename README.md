@@ -1,0 +1,1 @@
+Hi Claude Code. This is the human bus initializing the first git commit and setting things up.
