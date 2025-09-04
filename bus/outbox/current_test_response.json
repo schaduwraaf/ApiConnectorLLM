@@ -8,35 +8,29 @@
     "original_sender": "claude_main",
     "original_receiver": "claude_code",
     "bus_status": "routed_successfully",
-    "routing_timestamp": 1756973599.6165664,
+    "routing_timestamp": 1757015279.0611613,
     "verifier_status": {
       "verifier_id": "primary_verifier",
       "active_flags": [
         {
-          "timestamp": 1756973211.2432768,
+          "timestamp": 1757015184.9080937,
           "reason": "Timestamp outside acceptable window",
           "context": "Message(sender_id='guardian', receiver_id='autistic_verifier', message_type=<MessageType.VERIFICATION_REQUEST: 'verification_request'>, content_reference='verify_cognitive_integrity', timestamp=169373",
           "verifier_id": "primary_verifier"
-        },
-        {
-          "timestamp": 1756973445.4447558,
-          "reason": "Timestamp outside acceptable window",
-          "context": "Message(sender_id='claude_main', receiver_id='claude_code', message_type=<MessageType.EXECUTE: 'execute'>, content_reference='implement_bus_integration_feature', timestamp=1693738000.0, nonce='claude_",
-          "verifier_id": "primary_verifier"
         }
       ],
-      "total_violations": 2,
+      "total_violations": 1,
       "status": "protected"
     },
     "response_type": "bus_routing_confirmation"
   },
-  "timestamp": 1756973599.6165774,
-  "nonce": "ee651d3c00944811",
+  "timestamp": 1757015279.0611734,
+  "nonce": "3de404e5f643883b",
   "signature": {
     "algorithm": "Ed25519",
-    "signature_data": "uNoqkm75ivAP7JZOSl1pzSpyqZw6DIcaVL8DKdc66FN46bLI3cW66fq1ffE+5wNl+ek6PRKOsIIxcVGUNL92CQ==",
+    "signature_data": "b+/OkjxijRAjHf6+Ei2Ffg17Pb1gDpxFIGqHw/QA4ra0Z3L4zcLCk+6PmfnVlBIDVXZK6WqBbjF4oDQxGAFfAg==",
     "public_key_id": "bus_daemon",
-    "timestamp": 1756973599.6180983,
+    "timestamp": 1757015279.0625343,
     "key_fingerprint": "abf0f69e5df06737"
   }
 }

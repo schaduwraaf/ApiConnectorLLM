@@ -6,7 +6,7 @@
     "verifier_id": "primary_verifier",
     "active_flags": [
       {
-        "timestamp": 1756980448.7585657,
+        "timestamp": 1757015184.9080937,
         "reason": "Timestamp outside acceptable window",
         "context": "Message(sender_id='guardian', receiver_id='autistic_verifier', message_type=<MessageType.VERIFICATION_REQUEST: 'verification_request'>, content_reference='verify_cognitive_integrity', timestamp=169373",
         "verifier_id": "primary_verifier"
@@ -15,5 +15,5 @@
     "total_violations": 1,
     "status": "protected"
   },
-  "timestamp": 1756980448.758633
+  "timestamp": 1757015184.9081488
 }

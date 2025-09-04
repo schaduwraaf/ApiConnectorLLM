@@ -13,5 +13,8 @@ start : start-coding-expert
 
 install : install-coding-expert
 
-.PHONY : all help install-coding-expert start-coding-expert start install
+bus :
+	(cd bus && python3 bus_daemon.py)
+
+.PHONY : all help install-coding-expert start-coding-expert start install bus
 
