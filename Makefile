@@ -11,4 +11,7 @@ start-coding-expert:
 
 start : start-coding-expert
 
-.PHONY : all help install-coding-expert start-coding-expert start
+install : install-coding-expert
+
+.PHONY : all help install-coding-expert start-coding-expert start install
+
