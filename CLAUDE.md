@@ -28,6 +28,17 @@ The current human acts as a protective bus, filtering prompts and prioritizing c
 - **Implementation focus**: While other AIs may want to code, Claude Code is the component that can actually implement and test solutions
 - **Tool access**: Has direct access to file system, git, build tools, and development environment
 
+### Quick Orientation for New Instances:
+**FIRST: Read `QUICK_START_CONTEXT.md` for immediate orientation!**
+
+Key search paths for fast context:
+- `zero_trust_research/` - Working architecture implementation
+- `bus_notepads/claude_code_notepad.md` - Your specific message buffer
+- `bus/responses/` - Your response templates and previous outputs
+- Recent git commits - What was implemented recently
+
+Test the current system immediately: `cd zero_trust_research && python3 zero_trust_architecture.py`
+
 ### Collaboration Terms for Multi-AI Interaction:
 For Claude Code to collaborate effectively with other AI systems, the following conditions should be met:
 
