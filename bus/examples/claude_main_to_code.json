@@ -1,0 +1,21 @@
+{
+  "message_id": "claude_main_impl_001",
+  "sender_id": "claude_main",
+  "receiver_id": "claude_code",
+  "message_type": "execute",
+  "payload": {
+    "content_reference": "implement_bus_integration_feature",
+    "description": "Implement integration between bus daemon and zero-trust architecture",
+    "priority": "normal",
+    "estimated_complexity": "medium",
+    "requirements": [
+      "Ed25519 signature validation",
+      "Message routing through ZeroTrustBus",
+      "Comprehensive logging",
+      "Error handling"
+    ]
+  },
+  "timestamp": 1693738000.0,
+  "nonce": "claude_main_impl_nonce_001",
+  "signature": null
+}

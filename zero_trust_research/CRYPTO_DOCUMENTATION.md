@@ -265,6 +265,84 @@ success = bus.route_message(message, "Cryptographically authenticated request")
 - Constant-time operations (algorithm level)
 - Proper error handling and validation
 
+## Bus Daemon Integration
+
+### Automated Message Routing
+
+The **BusDaemon** (`bus/bus_daemon.py`) provides automated zero-trust message coordination:
+
+**Core Functions:**
+- **File-based message processing**: Monitors `bus/inbox/` for JSON messages
+- **Cryptographic validation**: Enforces Ed25519 signature verification when present
+- **Zero-trust routing**: Routes messages through `ZeroTrustBus` with full validation
+- **Response generation**: Creates signed responses and places them in `bus/outbox/`
+- **Constitutional protection**: Maintains autistic verifier flags and error reporting
+
+**Security Model:**
+- `FEATURE_CRYPTO_SIGNING=true` enables cryptographic enforcement
+- Messages without signatures are processed but flagged with warnings
+- Invalid signatures cause immediate rejection with detailed error responses
+- Timestamp validation enforces 5-minute window for message freshness
+- All verification failures are logged and preserved for audit
+
+**Message Flow:**
+1. JSON message placed in `bus/inbox/`
+2. Daemon validates structure and deserializes `ComponentMessage`
+3. Optional Ed25519 signature verification (if signature present)
+4. Message routed through `ZeroTrustBus.route_message()`
+5. Autistic verifier applies constitutional protections
+6. Success: Signed response written to `bus/outbox/`
+7. Failure: Detailed error report written to `bus/outbox/`
+8. Original message archived to `bus/archive/`
+
+**Bus Security Assumptions:**
+- **Filesystem security**: Bus directories must have proper permissions
+- **Key management**: Daemon keys stored with 0600 permissions
+- **Process isolation**: Single daemon instance per bus directory
+- **Message integrity**: JSON structure validation prevents malformed input
+- **Verification atomicity**: Either complete validation success or complete rejection
+- **Audit trail**: All messages, responses, and errors are logged and preserved
+
+### ComponentMessage Format
+
+Messages use the standardized `ComponentMessage` format:
+```json
+{
+  "message_id": "unique_identifier",
+  "sender_id": "component_name",
+  "receiver_id": "target_component", 
+  "message_type": "message_category",
+  "payload": {
+    "content_reference": "reference_string",
+    "...": "additional_fields"
+  },
+  "timestamp": 1693737600.0,
+  "nonce": "unique_nonce_string",
+  "signature": {
+    "algorithm": "Ed25519",
+    "signature_data": "base64_signature",
+    "public_key_id": "signer_key_id",
+    "timestamp": 1693737600.0,
+    "key_fingerprint": "optional_fingerprint"
+  }
+}
+```
+
+### Testing and Validation
+
+**Unit Tests** (10 tests in `bus/tests/test_bus_daemon.py`):
+- Daemon initialization and key management
+- Valid message processing and routing
+- Invalid message rejection and error handling
+- Signature verification and validation
+- Multiple message batch processing
+
+**Integration Testing:**
+- End-to-end inbox → outbox message flow
+- Real Ed25519 signature verification
+- Zero-trust bus constitutional protection
+- Error response generation and formatting
+
 ---
 
 **Implementation Status**: Production Ready ✅  

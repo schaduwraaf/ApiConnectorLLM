@@ -1,0 +1,9 @@
+{
+  "message_id": "broken_001",
+  "sender_id": "unknown_component",
+  "message_type": "execute",
+  "payload": {
+    "content_reference": "incomplete_message"
+  },
+  "timestamp": 1693737800.0
+}
