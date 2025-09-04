@@ -9,9 +9,20 @@ for neurodivergent verification patterns and zero-trust message validation.
 import hashlib
 import time
 import json
+import os
 from typing import Dict, List, Optional, Any
 from dataclasses import dataclass
 from enum import Enum
+
+# Feature flags
+FEATURE_CRYPTO_SIGNING = os.getenv("FEATURE_CRYPTO_SIGNING", "false").lower() == "true"
+
+# Conditional imports based on feature flags
+if FEATURE_CRYPTO_SIGNING:
+    try:
+        from crypto.signing import verify_signature, Signature
+    except ImportError:
+        FEATURE_CRYPTO_SIGNING = False  # Gracefully disable if module missing
 
 
 class MessageType(Enum):
@@ -33,9 +44,10 @@ class Message:
     timestamp: float
     nonce: str
     signature: str
+    signature_obj: Optional['Signature'] = None  # Optional crypto signature object
     
     def to_dict(self) -> Dict[str, Any]:
-        return {
+        result = {
             "sender_id": self.sender_id,
             "receiver_id": self.receiver_id,
             "message_type": self.message_type.value,
@@ -44,6 +56,9 @@ class Message:
             "nonce": self.nonce,
             "signature": self.signature
         }
+        if self.signature_obj:
+            result["signature_obj"] = self.signature_obj.to_dict()
+        return result
     
     def validate_structure(self) -> bool:
         """Validate all required fields are present"""
@@ -177,6 +192,23 @@ class ZeroTrustBus:
         # Autistic verifier check (constitutional protection)
         if not self.autistic_verifier.verify_message_pattern(message):
             return False
+        
+        # Cryptographic signature validation (if feature enabled)
+        if FEATURE_CRYPTO_SIGNING and message.signature_obj:
+            message_payload = {
+                "sender_id": message.sender_id,
+                "receiver_id": message.receiver_id,
+                "message_type": message.message_type.value,
+                "content_reference": message.content_reference,
+                "timestamp": message.timestamp,
+                "nonce": message.nonce
+            }
+            
+            if not verify_signature(message_payload, message.signature_obj):
+                self.autistic_verifier.flag_violation(
+                    "Cryptographic signature verification failed", message
+                )
+                return False
         
         # Nonce uniqueness
         message_hash = hashlib.sha256(
