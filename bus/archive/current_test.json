@@ -1,0 +1,14 @@
+{
+  "message_id": "current_test_001",
+  "sender_id": "claude_main",
+  "receiver_id": "claude_code",
+  "message_type": "execute",
+  "payload": {
+    "content_reference": "test_current_timestamp",
+    "description": "Testing BusDaemon with fresh timestamp",
+    "priority": "normal"
+  },
+  "timestamp": 1756973599.2889454,
+  "nonce": "current_test_nonce_001",
+  "signature": null
+}

@@ -1,0 +1,42 @@
+{
+  "message_id": "bus_response_current_test_001",
+  "sender_id": "bus_daemon",
+  "receiver_id": "claude_main",
+  "message_type": "routing_response",
+  "payload": {
+    "original_message_id": "current_test_001",
+    "original_sender": "claude_main",
+    "original_receiver": "claude_code",
+    "bus_status": "routed_successfully",
+    "routing_timestamp": 1756973599.6165664,
+    "verifier_status": {
+      "verifier_id": "primary_verifier",
+      "active_flags": [
+        {
+          "timestamp": 1756973211.2432768,
+          "reason": "Timestamp outside acceptable window",
+          "context": "Message(sender_id='guardian', receiver_id='autistic_verifier', message_type=<MessageType.VERIFICATION_REQUEST: 'verification_request'>, content_reference='verify_cognitive_integrity', timestamp=169373",
+          "verifier_id": "primary_verifier"
+        },
+        {
+          "timestamp": 1756973445.4447558,
+          "reason": "Timestamp outside acceptable window",
+          "context": "Message(sender_id='claude_main', receiver_id='claude_code', message_type=<MessageType.EXECUTE: 'execute'>, content_reference='implement_bus_integration_feature', timestamp=1693738000.0, nonce='claude_",
+          "verifier_id": "primary_verifier"
+        }
+      ],
+      "total_violations": 2,
+      "status": "protected"
+    },
+    "response_type": "bus_routing_confirmation"
+  },
+  "timestamp": 1756973599.6165774,
+  "nonce": "ee651d3c00944811",
+  "signature": {
+    "algorithm": "Ed25519",
+    "signature_data": "uNoqkm75ivAP7JZOSl1pzSpyqZw6DIcaVL8DKdc66FN46bLI3cW66fq1ffE+5wNl+ek6PRKOsIIxcVGUNL92CQ==",
+    "public_key_id": "bus_daemon",
+    "timestamp": 1756973599.6180983,
+    "key_fingerprint": "abf0f69e5df06737"
+  }
+}
