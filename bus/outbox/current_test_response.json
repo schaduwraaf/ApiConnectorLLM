@@ -8,7 +8,7 @@
     "original_sender": "claude_main",
     "original_receiver": "claude_code",
     "bus_status": "routed_successfully",
-    "routing_timestamp": 1757015279.0611613,
+    "routing_timestamp": 1757015701.3741755,
     "verifier_status": {
       "verifier_id": "primary_verifier",
       "active_flags": [
@@ -24,13 +24,13 @@
     },
     "response_type": "bus_routing_confirmation"
   },
-  "timestamp": 1757015279.0611734,
-  "nonce": "3de404e5f643883b",
+  "timestamp": 1757015701.3741856,
+  "nonce": "7652eb49a38ec1f6",
   "signature": {
     "algorithm": "Ed25519",
-    "signature_data": "b+/OkjxijRAjHf6+Ei2Ffg17Pb1gDpxFIGqHw/QA4ra0Z3L4zcLCk+6PmfnVlBIDVXZK6WqBbjF4oDQxGAFfAg==",
+    "signature_data": "gfYBdmyH0BJ1msWreg786CMzF5vvjPCuumruPogLe+4IXDijWVCBKO8ZBAro+rEBb39YthV3s7dH0MhAs/96Dw==",
     "public_key_id": "bus_daemon",
-    "timestamp": 1757015279.0625343,
+    "timestamp": 1757015701.3747938,
     "key_fingerprint": "abf0f69e5df06737"
   }
 }
