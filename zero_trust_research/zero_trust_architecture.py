@@ -20,7 +20,7 @@ FEATURE_CRYPTO_SIGNING = os.getenv("FEATURE_CRYPTO_SIGNING", "false").lower() ==
 # Conditional imports based on feature flags
 if FEATURE_CRYPTO_SIGNING:
     try:
-        from crypto.signing import verify_signature, Signature
+        from crypto.signing import verify_signature, Signature, VerificationError
     except ImportError:
         FEATURE_CRYPTO_SIGNING = False  # Gracefully disable if module missing
 
@@ -193,8 +193,16 @@ class ZeroTrustBus:
         if not self.autistic_verifier.verify_message_pattern(message):
             return False
         
-        # Cryptographic signature validation (if feature enabled)
-        if FEATURE_CRYPTO_SIGNING and message.signature_obj:
+        # Cryptographic signature validation (enforced when feature enabled)
+        if FEATURE_CRYPTO_SIGNING:
+            # When crypto signing is enabled, signature_obj is REQUIRED
+            if not message.signature_obj:
+                self.autistic_verifier.flag_violation(
+                    "Cryptographic signature required when FEATURE_CRYPTO_SIGNING enabled", message
+                )
+                return False
+            
+            # Verify the signature
             message_payload = {
                 "sender_id": message.sender_id,
                 "receiver_id": message.receiver_id,
@@ -204,9 +212,15 @@ class ZeroTrustBus:
                 "nonce": message.nonce
             }
             
-            if not verify_signature(message_payload, message.signature_obj):
+            try:
+                if not verify_signature(message_payload, message.signature_obj):
+                    self.autistic_verifier.flag_violation(
+                        "Cryptographic signature verification failed", message
+                    )
+                    return False
+            except VerificationError as e:
                 self.autistic_verifier.flag_violation(
-                    "Cryptographic signature verification failed", message
+                    f"Cryptographic verification error: {e}", message
                 )
                 return False
         
