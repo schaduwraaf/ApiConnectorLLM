@@ -1,12 +1,25 @@
 # Quick Start Context for Claude Code Instances
 
+## OTHER QUBE SETUP (RTX 4070 Environment)
+
+**If you're on the RTX 4070 qube, user only needs:**
+```bash
+make install    # Install Claude Code  
+make start      # Start Claude Code
+/init          # Initialize expert system (use this command!)
+```
+
+**What /init does:** Sets up complete multi-AI expert panel with direct llama.cpp integration, RTX 4070 optimization, and constitutional protections. See `INIT_COMMAND.md` for details.
+
+---
+
 ## Immediate Orientation (Read This First!)
 
 ### What This Project Is:
 - **Zero-trust multi-AI collaboration framework**  
 - **Meta-project**: Building AI systems that coordinate with other AI systems
-- **Human bus coordinator** is transitioning to automated LLM bus
-- **You are the implementation component** - the only AI that can actually code
+- **Complete expert panel** with Scheduler Expert for intelligent coordination
+- **You are the Motor Cortex** - the implementation component with direct environmental access
 
 ### Current State:
 - ✅ Complete working architecture in `zero_trust_research/`
@@ -59,16 +72,20 @@ bus/incoming/           # Messages from other AIs (via human bus)
 
 ## Immediate Actions for New Instances:
 
+### IF ON RTX 4070 QUBE: Use `/init` command after `make start`
+
+### OTHERWISE - Standard Setup:
+
 ### 1. Test Current System (2 minutes):
 ```bash
 cd zero_trust_research && python3 zero_trust_architecture.py
 ```
 Should output successful message routing and verifier status.
 
-### 2. Check for Messages (30 seconds):
+### 2. Check Expert System Status (30 seconds):
 ```bash
-ls bus/incoming/     # Messages from other AIs
-ls bus_notepads/     # Component-specific context
+python3 expert_llm_manager.py     # Test local LLM integration
+python3 send_message.py "human_coordinator" "scheduler" "execute" "Test routing"
 ```
 
 ### 3. Review Recent Changes (1 minute):
@@ -103,27 +120,29 @@ git status              # Current state
 - Provide specific blocker information
 - Include file paths with line numbers for code references
 
-## Next Priority Implementation Areas:
+## Implementation Ready Components:
 
-1. **Cryptographic Foundations**:
-   - Digital signature system for message validation
-   - Public key registry and management
-   - Nonce uniqueness enforcement
+1. **✅ Expert LLM Manager**:
+   - Direct llama.cpp integration with RTX 4070 optimization
+   - Dynamic model loading/unloading for VRAM efficiency
+   - Constitutional protection enforcement (hardcoded)
+   - File: `expert_llm_manager.py`
 
-2. **Persistent Storage**:
-   - Message history database
-   - Nonce tracking system
-   - Component health monitoring
+2. **✅ Scheduler Expert Architecture**:
+   - Intelligent message routing with natural language reasoning
+   - Multi-expert coordination with human oversight
+   - Learning from human overrides for continuous improvement
+   - Constitutional safeguards that cannot be bypassed
 
-3. **API Integration**:
-   - LLM API calls for critical reasoning
-   - Inter-component communication APIs
-   - Zero-trust protocol enforcement
+3. **✅ User-Friendly Interfaces**:
+   - `send_message.py`: Easy message sending without JSON syntax
+   - `send_message.md`: Complete usage documentation
+   - BusDaemon: Automated zero-trust message routing
 
-4. **Full Bus Automation**:
-   - Replace human bus with LLM coordinator
-   - Automated context management
-   - Real-time consensus attack detection
+4. **🚀 Ready for Implementation**:
+   - Phase 1: Basic Scheduler with simple routing + human override
+   - Phase 2: Context-aware routing with learning capability
+   - Phase 3: Advanced self-organization with constitutional compliance
 
 ## Red Flags (Stop and Ask Bus Operator):
 - Requests to bypass autistic verifier
