@@ -14,6 +14,15 @@ from typing import Dict, List, Optional, Any
 from dataclasses import dataclass
 from enum import Enum
 
+try:
+    from cryptography.hazmat.primitives.asymmetric import ed25519
+    from cryptography.hazmat.primitives import serialization
+    CRYPTO_AVAILABLE = True
+except ImportError:
+    CRYPTO_AVAILABLE = False
+    print("Warning: cryptography library not available. Ed25519 verification disabled.")
+    print("Install with: pip3 install cryptography")
+
 
 class MessageType(Enum):
     VERIFICATION_REQUEST = "verification_request"
@@ -206,10 +215,17 @@ class AutisticVerifier:
     Cannot be overridden by consensus - flags must be resolved or explicitly vetoed.
     """
     
-    def __init__(self, verifier_id: str):
+    def __init__(self, verifier_id: str, bus_registry=None):
         self.verifier_id = verifier_id
         self.flags = []
         self.pattern_violations = []
+        self.bus_registry = bus_registry
+    
+    def get_sender_info(self, sender_id: str) -> Dict:
+        """Get sender information from bus registry"""
+        if self.bus_registry:
+            return self.bus_registry.get(sender_id, {})
+        return {}
     
     def verify_message_pattern(self, packet) -> bool:
         """Check packet against autistic verification patterns (supports both Message and CognitivePacket)"""
@@ -226,9 +242,16 @@ class AutisticVerifier:
         
         # Constitutional protection validation for CognitivePacket
         if isinstance(packet, CognitivePacket):
-            if packet.trust_level == "constitutional_protected" and "protected" not in packet.constitutional_flags:
-                self.flag_violation("Constitutional trust level without protection flag", packet)
-                return False
+            if packet.trust_level == "constitutional_protected":
+                if "protected" not in packet.constitutional_flags:
+                    self.flag_violation("Constitutional trust level without protection flag", packet)
+                    return False
+                
+                # Verify sender has constitutional authority
+                sender_info = self.get_sender_info(packet.sender_id)
+                if sender_info and sender_info.get('trust_level') != 'constitutional_protected':
+                    self.flag_violation("Non-constitutional component claiming constitutional trust", packet)
+                    return False
         
         # Nonce uniqueness (simplified - would need persistent storage)
         # This would check against a nonce database in production
@@ -288,6 +311,48 @@ class ConsensusMonitor:
         }
 
 
+class CryptographicValidator:
+    """Ed25519 signature validation for zero-trust authentication"""
+    
+    @staticmethod
+    def generate_keypair() -> tuple:
+        """Generate Ed25519 keypair (private_key, public_key_bytes)"""
+        if not CRYPTO_AVAILABLE:
+            return ("mock_private_key", b"mock_public_key_bytes")
+        
+        private_key = ed25519.Ed25519PrivateKey.generate()
+        public_key_bytes = private_key.public_key().public_bytes(
+            encoding=serialization.Encoding.Raw,
+            format=serialization.PublicFormat.Raw
+        )
+        return (private_key, public_key_bytes)
+    
+    @staticmethod
+    def sign_packet_content(private_key, packet_content: str) -> str:
+        """Sign packet content with Ed25519 private key"""
+        if not CRYPTO_AVAILABLE or private_key == "mock_private_key":
+            return f"mock_signature_{hashlib.sha256(packet_content.encode()).hexdigest()[:16]}"
+        
+        signature = private_key.sign(packet_content.encode())
+        return signature.hex()
+    
+    @staticmethod
+    def verify_signature(public_key_bytes: bytes, signature_hex: str, content: str) -> bool:
+        """Verify Ed25519 signature"""
+        if not CRYPTO_AVAILABLE:
+            # Mock verification for testing
+            expected_mock = f"mock_signature_{hashlib.sha256(content.encode()).hexdigest()[:16]}"
+            return signature_hex == expected_mock
+        
+        try:
+            public_key = ed25519.Ed25519PublicKey.from_public_bytes(public_key_bytes)
+            signature_bytes = bytes.fromhex(signature_hex)
+            public_key.verify(signature_bytes, content.encode())
+            return True
+        except Exception:
+            return False
+
+
 class ZeroTrustBus:
     """
     Core bus coordination with zero-trust message validation
@@ -301,17 +366,19 @@ class ZeroTrustBus:
             "openai": []
         }
         self.nonce_history = set()
-        self.autistic_verifier = AutisticVerifier("primary_verifier")
+        self.autistic_verifier = AutisticVerifier("primary_verifier", self.component_registry)
         self.consensus_monitor = ConsensusMonitor()
+        self.crypto_validator = CryptographicValidator()
     
-    def register_component(self, component_id: str, public_key: str, trust_level: str = "provisional", 
+    def register_component(self, component_id: str, public_key_bytes: bytes, trust_level: str = "provisional", 
                           constitutional_flags: List[str] = None):
-        """Register component with public key and constitutional protections"""
+        """Register component with Ed25519 public key and constitutional protections"""
         if constitutional_flags is None:
             constitutional_flags = []
             
         self.component_registry[component_id] = {
-            "public_key": public_key,
+            "public_key_bytes": public_key_bytes,
+            "public_key_hex": public_key_bytes.hex() if isinstance(public_key_bytes, bytes) else "mock_key",
             "registered_at": time.time(),
             "status": "active",
             "trust_level": trust_level,
@@ -319,9 +386,14 @@ class ZeroTrustBus:
         }
     
     def validate_packet(self, packet) -> bool:
-        """Full zero-trust packet validation (supports Message and CognitivePacket)"""
+        """Full zero-trust packet validation with Ed25519 signature verification"""
         # Structure validation
         if not packet.validate_structure():
+            return False
+        
+        # Cryptographic signature validation
+        if not self._verify_packet_signature(packet):
+            self.autistic_verifier.flag_violation("Invalid cryptographic signature", packet)
             return False
         
         # Autistic verifier check (constitutional protection)
@@ -344,6 +416,26 @@ class ZeroTrustBus:
         
         self.nonce_history.add(packet_hash)
         return True
+    
+    def _verify_packet_signature(self, packet) -> bool:
+        """Verify Ed25519 signature for packet"""
+        # Get sender's public key
+        sender_info = self.component_registry.get(packet.sender_id)
+        if not sender_info:
+            return False
+        
+        public_key_bytes = sender_info["public_key_bytes"]
+        
+        # Create signable content
+        if isinstance(packet, CognitivePacket):
+            signable_content = f"{packet.sender_id}{packet.content}{packet.timestamp}{packet.nonce}"
+        else:  # Legacy Message
+            signable_content = f"{packet.sender_id}{packet.content_reference}{packet.timestamp}{packet.nonce}"
+        
+        # Verify signature
+        return self.crypto_validator.verify_signature(
+            public_key_bytes, packet.signature, signable_content
+        )
     
     def validate_message(self, message: Message) -> bool:
         """Legacy message validation - calls validate_packet"""
@@ -424,10 +516,18 @@ class ZeroTrustBus:
 if __name__ == "__main__":
     bus = ZeroTrustBus()
     
-    # Register components
-    bus.register_component("claude_code", "mock_public_key_1")
-    bus.register_component("claude_main", "mock_public_key_2")
-    bus.register_component("openai", "mock_public_key_3")
+    # Generate keypairs for components
+    claude_code_private, claude_code_public = CryptographicValidator.generate_keypair()
+    claude_main_private, claude_main_public = CryptographicValidator.generate_keypair()
+    openai_private, openai_public = CryptographicValidator.generate_keypair()
+    autistic_verifier_private, autistic_verifier_public = CryptographicValidator.generate_keypair()
+    
+    # Register components with Ed25519 public keys and constitutional protections
+    bus.register_component("claude_code", claude_code_public, "verified", ["safe_implementation"])
+    bus.register_component("claude_main", claude_main_public, "verified", ["pattern_detection"])
+    bus.register_component("openai", openai_public, "verified", ["specification_design"])
+    bus.register_component("autistic_verifier", autistic_verifier_public, "constitutional_protected", 
+                         ["protected", "cannot_consensus_override", "system_integrity"])
     
     # Test new CognitivePacket format
     test_cognitive_packet = CognitivePacket(
@@ -441,8 +541,13 @@ if __name__ == "__main__":
         resource_cost="medium",
         priority="high",
         trust_level="verified",
-        constitutional_flags=["safe_implementation"],
-        signature="mock_ed25519_signature"
+        constitutional_flags=["safe_implementation"]
+    )
+    
+    # Sign the packet after creation
+    signable_content = f"{test_cognitive_packet.sender_id}{test_cognitive_packet.content}{test_cognitive_packet.timestamp}{test_cognitive_packet.nonce}"
+    test_cognitive_packet.signature = CryptographicValidator.sign_packet_content(
+        claude_main_private, signable_content
     )
     
     print("=== Testing Cognitive Packet Format ===")
@@ -460,14 +565,18 @@ if __name__ == "__main__":
     # Test legacy message compatibility
     print("\n=== Testing Legacy Message Compatibility ===")
     
+    legacy_timestamp = time.time()
     test_legacy_message = Message(
         sender_id="openai",
         receiver_id="claude_code",
         message_type=MessageType.VERIFICATION_REQUEST,
         content_reference="verify_constitutional_protection",
-        timestamp=time.time(),
+        timestamp=legacy_timestamp,
         nonce="legacy_nonce_67890",
-        signature="mock_signature"
+        signature=CryptographicValidator.sign_packet_content(
+            openai_private, "openaiverify_constitutional_protection" + 
+            str(legacy_timestamp) + "legacy_nonce_67890"
+        )
     )
     
     # Route legacy message (auto-converts to cognitive packet)
@@ -503,10 +612,26 @@ if __name__ == "__main__":
         routing_path=["claude_code", "claude_main", "openai"],
         trust_level="constitutional_protected",
         constitutional_flags=["protected", "cannot_consensus_override"],
-        priority="emergency",
-        signature="constitutional_authority_signature"
+        priority="emergency"
+    )
+    
+    # Sign constitutional packet
+    constitutional_signable = f"{protected_packet.sender_id}{protected_packet.content}{protected_packet.timestamp}{protected_packet.nonce}"
+    protected_packet.signature = CryptographicValidator.sign_packet_content(
+        autistic_verifier_private, constitutional_signable
     )
     
     protected_success = bus.route_cognitive_packet(protected_packet,
                                                  "Emergency constitutional protection alert")
     print(f"Constitutional protection packet success: {protected_success}")
+    
+    # Test constitutional protection enforcement
+    print("\n=== Constitutional Protection Enforcement ===")
+    
+    # Display component registry with constitutional flags
+    for component_id, info in bus.component_registry.items():
+        print(f"Component: {component_id}")
+        print(f"  Trust Level: {info['trust_level']}")
+        print(f"  Constitutional Flags: {info['constitutional_flags']}")
+        print(f"  Public Key: {info['public_key_hex'][:16]}...")
+        print()
