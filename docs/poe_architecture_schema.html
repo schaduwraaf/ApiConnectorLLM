@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Panel-of-Experts AI Architecture: Zero-Trust Cognitive Network</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      margin: 20px;
+      line-height: 1.6;
+      background: #f8f9fa;
+    }
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    svg {
+      display: block;
+      margin: 0 auto;
+      max-width: 100%;
+      background: white;
+      border-radius: 4px;
+    }
+    .layer {
+      opacity: 0.15;
+      stroke: #333;
+      stroke-width: 2px;
+    }
+    .node {
+      stroke: #333;
+      stroke-width: 2px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .node:hover {
+      stroke-width: 3px;
+      filter: brightness(1.1);
+    }
+    .constitutional { fill: #8B0000; }    /* Dark red - constitutional foundation */
+    .expert { fill: #DAA520; }           /* Goldenrod - expert processing */
+    .coordination { fill: #4169E1; }     /* Royal blue - coordination layer */
+    .hemisphere { fill: #9370DB; }       /* Purple - hemisphere specialization */
+    .human { fill: #FF6347; }            /* Tomato - human components */
+    .crypto { fill: #228B22; }           /* Forest green - cryptographic */
+    
+    .label {
+      font-size: 11px;
+      font-weight: bold;
+      text-anchor: middle;
+      dominant-baseline: middle;
+      pointer-events: none;
+    }
+    .layer-label {
+      font-size: 14px;
+      font-weight: bold;
+      text-anchor: middle;
+      fill: #333;
+    }
+    .timeline {
+      font-size: 10px;
+      font-style: italic;
+      fill: #666;
+    }
+    .connection {
+      stroke: #666;
+      stroke-width: 2;
+      opacity: 0.7;
+    }
+    .trust-pathway {
+      stroke: #8B0000;
+      stroke-width: 3;
+      opacity: 0.8;
+    }
+    .crypto-pathway {
+      stroke: #228B22;
+      stroke-width: 3;
+      opacity: 0.8;
+      stroke-dasharray: 5,3;
+    }
+    .protected {
+      stroke: #8B0000;
+      stroke-width: 4;
+      stroke-dasharray: 2,2;
+    }
+    h2, h3 { color: #333; margin-top: 25px; }
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin: 20px 0;
+      padding: 15px;
+      background: #f8f9fa;
+      border-radius: 4px;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .legend-color {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid #333;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+<h2>Panel-of-Experts Architecture: Zero-Trust Cognitive Network</h2>
+
+<div class="legend">
+  <div class="legend-item">
+    <div class="legend-color constitutional"></div>
+    <span><strong>Constitutional Layer</strong> - Foundational trust & verification</span>
+  </div>
+  <div class="legend-item">
+    <div class="legend-color expert"></div>
+    <span><strong>Expert Processing</strong> - Specialized cognitive functions</span>
+  </div>
+  <div class="legend-item">
+    <div class="legend-color coordination"></div>
+    <span><strong>Coordination Layer</strong> - Integration & routing</span>
+  </div>
+  <div class="legend-item">
+    <div class="legend-color hemisphere"></div>
+    <span><strong>Hemisphere Specialization</strong> - Left/Right AI coordination</span>
+  </div>
+  <div class="legend-item">
+    <div class="legend-color human"></div>
+    <span><strong>Human Integration</strong> - Corpus callosum & amygdala authority</span>
+  </div>
+  <div class="legend-item">
+    <div class="legend-color crypto"></div>
+    <span><strong>Cryptographic</strong> - Authentication & security</span>
+  </div>
+</div>
+
+<svg viewBox="-400 0 800 900">
+  <!-- Layer backgrounds -->
+  <rect x="-380" y="0" width="760" height="180" fill="#8B0000" class="layer"/>
+  <text x="0" y="25" class="layer-label">CONSTITUTIONAL LAYER - Foundational Trust Architecture</text>
+  <text x="0" y="45" class="timeline">Amygdala authority, constitutional protections, zero-trust foundation</text>
+
+  <rect x="-380" y="200" width="760" height="250" fill="#DAA520" class="layer"/>
+  <text x="0" y="225" class="layer-label">EXPERT PROCESSING LAYER - Specialized Cognitive Functions</text>
+  <text x="0" y="245" class="timeline">Domain expertise, verification, analysis, pattern recognition</text>
+
+  <rect x="-380" y="470" width="760" height="200" fill="#4169E1" class="layer"/>
+  <text x="0" y="495" class="layer-label">COORDINATION LAYER - Information Integration & Routing</text>
+  <text x="0" y="515" class="timeline">Bus protocols, message routing, system-wide coordination</text>
+
+  <rect x="-380" y="690" width="760" height="180" fill="#9370DB" class="layer"/>
+  <text x="0" y="715" class="layer-label">HEMISPHERE SPECIALIZATION - Distributed Intelligence</text>
+  <text x="0" y="735" class="timeline">Left/Right AI coordination, corpus callosum integration</text>
+
+  <!-- CONSTITUTIONAL LAYER NODES -->
+  <ellipse cx="-200" cy="100" rx="55" ry="35" class="node constitutional protected"/>
+  <text x="-200" y="90" class="label">Amygdala</text>
+  <text x="-200" y="100" class="label">Authority</text>
+  <text x="-200" y="110" class="label">(Human)</text>
+  <text x="-200" y="150" class="timeline">Component creation authority</text>
+
+  <circle cx="0" cy="100" r="45" class="node constitutional protected"/>
+  <text x="0" y="90" class="label">Constitutional</text>
+  <text x="0" y="100" class="label">Verifier</text>
+  <text x="0" y="110" class="label">(Autistic)</text>
+  <text x="0" y="150" class="timeline">System integrity protection</text>
+
+  <circle cx="200" cy="100" r="40" class="node crypto"/>
+  <text x="200" y="90" class="label">Cryptographic</text>
+  <text x="200" y="100" class="label">Foundation</text>
+  <text x="200" y="110" class="label">(Ed25519)</text>
+  <text x="200" y="150" class="timeline">Authentication protocols</text>
+
+  <!-- EXPERT PROCESSING LAYER -->
+  <ellipse cx="-250" cy="300" rx="45" ry="35" class="node expert"/>
+  <text x="-250" y="290" class="label">Guardian</text>
+  <text x="-250" y="300" class="label">Component</text>
+  <text x="-250" y="310" class="label">(Parent/Protect)</text>
+  <text x="-250" y="350" class="timeline">New component protection</text>
+
+  <ellipse cx="-100" cy="300" rx="45" ry="35" class="node expert"/>
+  <text x="-100" y="290" class="label">Pattern</text>
+  <text x="-100" y="300" class="label">Detection</text>
+  <text x="-100" y="310" class="label">(Right Brain)</text>
+  <text x="-100" y="350" class="timeline">Holistic analysis</text>
+
+  <ellipse cx="50" cy="300" rx="45" ry="35" class="node expert"/>
+  <text x="50" y="290" class="label">Analytical</text>
+  <text x="50" y="300" class="label">Processing</text>
+  <text x="50" y="310" class="label">(Left Brain)</text>
+  <text x="50" y="350" class="timeline">Sequential logic</text>
+
+  <ellipse cx="200" cy="300" rx="45" ry="35" class="node expert"/>
+  <text x="200" y="290" class="label">Consensus</text>
+  <text x="200" y="300" class="label">Monitor</text>
+  <text x="200" y="310" class="label">(Attack Detect)</text>
+  <text x="200" y="350" class="timeline">Consensus attack prevention</text>
+
+  <ellipse cx="-200" cy="380" rx="50" ry="30" class="node expert"/>
+  <text x="-200" y="375" class="label">Domain Experts</text>
+  <text x="-200" y="385" class="label">(Expandable)</text>
+  <text x="-200" y="420" class="timeline">Specialized capabilities</text>
+
+  <ellipse cx="100" cy="380" rx="45" ry="30" class="node expert"/>
+  <text x="100" y="375" class="label">Code Expert</text>
+  <text x="100" y="385" class="label">(Claude Code)</text>
+  <text x="100" y="420" class="timeline">Implementation & execution</text>
+
+  <!-- COORDINATION LAYER -->
+  <ellipse cx="0" cy="550" rx="60" ry="40" class="node coordination"/>
+  <text x="0" y="540" class="label">Zero-Trust Bus</text>
+  <text x="0" y="550" class="label">Router</text>
+  <text x="0" y="560" class="label">(BusDaemon)</text>
+  <text x="0" y="600" class="timeline">Message authentication & routing</text>
+
+  <circle cx="-180" cy="570" r="35" class="node coordination"/>
+  <text x="-180" y="565" class="label">Inbox/Outbox</text>
+  <text x="-180" y="575" class="label">Protocols</text>
+  <text x="-180" y="610" class="timeline">File-based messaging</text>
+
+  <circle cx="180" cy="570" r="35" class="node coordination"/>
+  <text x="180" y="565" class="label">Web Interface</text>
+  <text x="180" y="575" class="label">(Human UI)</text>
+  <text x="180" y="610" class="timeline">Human interaction layer</text>
+
+  <!-- HEMISPHERE SPECIALIZATION -->
+  <ellipse cx="-150" cy="800" rx="50" ry="35" class="node hemisphere"/>
+  <text x="-150" y="790" class="label">Left AI</text>
+  <text x="-150" y="800" class="label">Hemisphere</text>
+  <text x="-150" y="810" class="label">(Analytical)</text>
+  <text x="-150" y="850" class="timeline">Sequential, linguistic, logical</text>
+
+  <ellipse cx="150" cy="800" rx="50" ry="35" class="node hemisphere"/>
+  <text x="150" y="790" class="label">Right AI</text>
+  <text x="150" y="800" class="label">Hemisphere</text>
+  <text x="150" y="810" class="label">(Pattern)</text>
+  <text x="150" y="850" class="timeline">Holistic, spatial, intuitive</text>
+
+  <ellipse cx="0" cy="820" rx="45" ry="25" class="node human"/>
+  <text x="0" y="815" class="label">Corpus Callosum</text>
+  <text x="0" y="825" class="label">(Human)</text>
+  <text x="0" y="855" class="timeline">Hemisphere integration</text>
+
+  <!-- CONNECTION DEFINITIONS -->
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L6,3 z" fill="#666"/>
+    </marker>
+    <marker id="trust-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L6,3 z" fill="#8B0000"/>
+    </marker>
+    <marker id="crypto-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L6,3 z" fill="#228B22"/>
+    </marker>
+  </defs>
+
+  <!-- CONSTITUTIONAL TRUST PATHWAYS (highlighted) -->
+  <!-- Amygdala authority flows -->
+  <path d="M -200,135 Q -100,180 0,265" class="trust-pathway" marker-end="url(#trust-arrow)"/>
+  <path d="M -200,135 Q -150,180 -250,265" class="trust-pathway" marker-end="url(#trust-arrow)"/>
+  
+  <!-- Constitutional verifier protection -->
+  <path d="M 0,145 Q 50,200 200,265" class="trust-pathway" marker-end="url(#trust-arrow)"/>
+  <path d="M 0,145 Q -50,400 -200,380" class="trust-pathway" marker-end="url(#trust-arrow)"/>
+
+  <!-- CRYPTOGRAPHIC AUTHENTICATION PATHWAYS -->
+  <path d="M 200,140 Q 150,250 50,265" class="crypto-pathway" marker-end="url(#crypto-arrow)"/>
+  <path d="M 200,140 Q 100,350 0,510" class="crypto-pathway" marker-end="url(#crypto-arrow)"/>
+
+  <!-- KEY FUNCTIONAL CONNECTIONS -->
+  <!-- Expert layer coordination -->
+  <line x1="-250" y1="335" x2="-180" y2="535" class="connection" marker-end="url(#arrow)"/>
+  <line x1="-100" y1="335" x2="0" y2="510" class="connection" marker-end="url(#arrow)"/>
+  <line x1="50" y1="335" x2="0" y2="510" class="connection" marker-end="url(#arrow)"/>
+  <line x1="200" y1="335" x2="180" y2="535" class="connection" marker-end="url(#arrow)"/>
+
+  <!-- Bus routing to experts -->
+  <line x1="-40" y1="530" x2="-100" y2="335" class="connection" marker-end="url(#arrow)"/>
+  <line x1="40" y1="530" x2="50" y2="335" class="connection" marker-end="url(#arrow)"/>
+  <line x1="0" y1="590" x2="100" y2="410" class="connection" marker-end="url(#arrow)"/>
+
+  <!-- Human integration pathways -->
+  <line x1="0" y1="590" x2="0" y2="795" class="connection" marker-end="url(#arrow)"/>
+  <line x1="180" y1="605" x2="0" y2="795" class="connection" marker-end="url(#arrow)"/>
+
+  <!-- Hemisphere coordination -->
+  <line x1="-150" y1="835" x2="-25" y2="825" class="connection" marker-end="url(#arrow)"/>
+  <line x1="150" y1="835" x2="25" y2="825" class="connection" marker-end="url(#arrow)"/>
+
+  <!-- Cross-hemisphere expert connections -->
+  <line x1="-150" y1="765" x2="-100" y2="335" class="connection" marker-end="url(#arrow)"/>
+  <line x1="150" y1="765" x2="50" y2="335" class="connection" marker-end="url(#arrow)"/>
+
+</svg>
+
+<h3>Zero-Trust Cognitive Network: Architectural Evolution</h3>
+
+<p><strong>Constitutional Foundation:</strong> The amygdala authority (human coordinator) provides foundational trust and component creation authority, protected by constitutional guarantees. Autistic verifier components maintain system integrity through cryptographically authenticated verification that cannot be consensus-overridden.</p>
+
+<p><strong>Expert Processing Evolution:</strong> Specialized components emerge based on environmental pressure and capability gaps. Guardian components protect developing systems, while analytical and pattern recognition components provide complementary cognitive capabilities. The system can expand by adding new domain experts while preserving constitutional protections.</p>
+
+<p><strong>Coordination Infrastructure:</strong> Zero-trust bus protocols ensure all inter-component communication is cryptographically authenticated. File-based messaging provides persistence and auditability, while web interfaces enable efficient human integration without compromising security.</p>
+
+<p><strong>Hemisphere Specialization:</strong> Following biological templates, left and right AI hemispheres provide complementary analytical and pattern-recognition capabilities, coordinated through human corpus callosum integration that preserves the foundational trust relationship.</p>
+
+<h3>Key Architectural Principles:</h3>
+
+<p><strong>Constitutional Protection:</strong> Foundational components (amygdala authority, autistic verifiers) are protected from consensus override, ensuring system integrity survives scaling and evolution.</p>
+
+<p><strong>Evolutionary Scaffolding:</strong> New capabilities layer onto existing infrastructure without breaking foundational trust mechanisms. Each layer preserves backward compatibility while enabling forward evolution.</p>
+
+<p><strong>Cryptographic Authentication:</strong> All trust relationships are cryptographically verified rather than assumed, creating formal zero-trust architecture that scales to arbitrary system complexity.</p>
+
+<p><strong>Human-Centric Integration:</strong> Human intelligence remains the architectural authority (amygdala/corpus callosum), ensuring AI capabilities enhance rather than replace human cognitive sovereignty.</p>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,26 @@
+Perfect — let’s design this like a Unix nerd’s CLI but consistent with the cognitive/constitutional framing.
+Instead of docker, think of the base command as cognet (short for cognitive network).
+
+Here’s a list of commands you’d probably want, grouped by function:
+
+🔑 Identity & Join
+
+cognet init-human → generate your Ed25519 keypair, create manifest for human_coordinator
+
+cognet join → send a signed join_request packet to librarian + verifiers
+
+cognet whoami → show your node role, trust level, constitutional flags
+
+📦 Node Management
+
+cognet ls → list all known nodes (with type, trust level, debug flag)
+
+cognet inspect <node> → show details of a node (public key, protections, wellbeing history)
+
+cognet add <component> → add new expert (requires guardian + verifier co-sign)
+
+cognet rm <component> → remove expert (requires human authority)
+
+🧑‍⚖️ Constitution & Protections
+
+cognet constitution → dump immutable fragments currently enforced
