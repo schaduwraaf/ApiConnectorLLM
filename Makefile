@@ -1,5 +1,7 @@
 all :
 
+nop :
+
 help :
 	@grep PHONY Makefile | grep -v grep
 
